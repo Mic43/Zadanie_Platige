@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35004.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platigue.Db", "Platigue.Db\Platigue.Db.csproj", "{B15D2600-08F7-44E7-A95B-26ECC42555B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platigue.Gui", "Platigue.Gui\Platigue.Gui.csproj", "{006B52DF-1550-4BA9-AF89-6244E650A464}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B15D2600-08F7-44E7-A95B-26ECC42555B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B15D2600-08F7-44E7-A95B-26ECC42555B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B15D2600-08F7-44E7-A95B-26ECC42555B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B15D2600-08F7-44E7-A95B-26ECC42555B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006B52DF-1550-4BA9-AF89-6244E650A464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006B52DF-1550-4BA9-AF89-6244E650A464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006B52DF-1550-4BA9-AF89-6244E650A464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006B52DF-1550-4BA9-AF89-6244E650A464}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3446D47F-81AF-4350-8B03-A873514781D7}
+	EndGlobalSection
+EndGlobal

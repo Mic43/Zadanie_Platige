@@ -1,0 +1,77 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Windows.Forms" #>
+
+<#@ import namespace="System.Windows.Forms" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Text" #>
+<#@ assembly name="$(SolutionDir)\Platigue.Db\bin\Debug\net8.0\Platigue.Db.dll" #> 
+
+<#
+// Definiujemy model, który chcemy użyć
+var modelType = typeof(Platigue.Gui.Invoice); // Zmień na typ swojego modelu
+
+// Zbieramy właściwości modelu
+var properties = modelType.GetProperties();
+#>
+
+public partial class <#= modelType.Name #>UserControl : UserControl
+{
+    private <#= modelType.Name #> _model;
+
+    public <#= modelType.Name #>UserControl()
+    {
+        InitializeComponent();
+    }
+
+    public void Bind(<#= modelType.Name #> model)
+    {
+        _model = model;
+
+<# 
+    // Generowanie kontrolek dla każdej właściwości
+    foreach (var property in properties) 
+    {
+        string controlName = "textBox" + property.Name;
+        string controlType = property.PropertyType.Name;
+        string textBoxControl = controlType switch
+        {
+            "Int32" => "TextBox",
+            "String" => "TextBox",
+            "Decimal" => "TextBox",
+            "DateTime" => "DateTimePicker",
+            _ => "TextBox"
+        };
+#>
+        // Tworzenie kontrolki
+        <#= textBoxControl #> <#= controlName #> = new <#= textBoxControl #>();
+        <#= controlName #>.Text = _model.<#= property.Name #>.ToString();
+        
+        // Obsługa zdarzenia TextChanged
+        <#= controlName #>.TextChanged += (s, e) => 
+        {
+            if (property.PropertyType == typeof(int))
+            {
+                _model.<#= property.Name #> = int.Parse(<#= controlName #>.Text);
+            }
+            else if (property.PropertyType == typeof(decimal))
+            {
+                _model.<#= property.Name #> = decimal.Parse(<#= controlName #>.Text);
+            }
+            else if (property.PropertyType == typeof(DateTime))
+            {
+                _model.<#= property.Name #> = DateTime.Parse(<#= controlName #>.Text);
+            }
+            else
+            {
+                _model.<#= property.Name #> = <#= property.PropertyType.Name #>.Parse(<#= controlName #>.Text);
+            }
+        };
+        
+        this.Controls.Add(<#= controlName #>);
+<# 
+    } 
+#>
+    }
+}
