@@ -24,7 +24,7 @@ namespace Platigue.Gui
 
             Application.Run(new MainForm(context));
         }
-     
+
         private static string GetConnectionStringFromUser()
         {
             string username = "dsds";
@@ -45,21 +45,33 @@ namespace Platigue.Gui
         }
         private static PlatigueDbContext? CreateContext(bool useDefault = true)
         {
-            void TrySeedData()
+            void TrySeedData(PlatigueDbContext ctx)
             {
+                if (!ctx.Clients.Any() && !ctx.Invoices.Any())
+                {
+                    var client = new Client("dsds", "dsdsds", "dsdsds", "dsdsds", "dsdsds", true);
+                    client.AddInvoice(new Invoice("2121", client,20,"PLN",10,DateTime.Now,"kwa"));
+                    
+                    ctx.Clients.AddRange(
+                        client,
+                        new Client("dsds2", "dsdsds", "dsdsds", "dsdsds", "dsdsds", false),
+                        new Client("dsds3", "dsdsds", "dsdsds", "dsdsds", "dsdsds", false));
+                }
 
+
+                ctx.SaveChanges();
             }
 
             Func<string> getConnString =
                 useDefault ? () => PlatigueDbContextFactory.DefaultConnectionString : GetConnectionStringFromUser;
 
-          
-            var ctx =  PlatigueDbContext.FromConnectionString(getConnString());
+
+            var ctx = PlatigueDbContext.FromConnectionString(getConnString());
 
             if (!ctx.Database.CanConnect())
                 return null;
 
-            TrySeedData();
+            TrySeedData(ctx);
             return ctx;
         }
     }

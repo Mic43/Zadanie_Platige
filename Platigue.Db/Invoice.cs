@@ -4,7 +4,7 @@ namespace Platigue.Db;
 
 public class Invoice
 {
-    public Client? Client { get;  }
+    public Client? Client { get; set; }
     public int ClientId { get;  set; }
 
     [Key]
@@ -27,8 +27,6 @@ public class Invoice
         if (client == null) throw new ArgumentNullException(nameof(client));
         if (string.IsNullOrEmpty(currency))
             throw new ArgumentException("Value cannot be null or empty.", nameof(currency));
-        if (string.IsNullOrEmpty(description))
-            throw new ArgumentException("Value cannot be null or empty.", nameof(description));
         if (string.IsNullOrEmpty(number)) throw new ArgumentException("Value cannot be null or empty.", nameof(number));
 
         Number = number;
@@ -36,7 +34,13 @@ public class Invoice
         Currency = currency;
         VAT = vat;
         IssueDate = issueDate;
-        Description = description;
+        Description = description ?? throw new ArgumentNullException(nameof(description));
         ClientId = client.Id;
+    }
+
+    public static Invoice Default()
+    {
+
+        return new Invoice("1", Client.Default(), 0, "PLN", 0, DateTime.Now, "");
     }
 }

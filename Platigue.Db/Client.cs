@@ -19,11 +19,13 @@ public class Client
     {
         
     }
-    public Client(int id, string name, string shortcut, string country, string address, string nip, bool isActive)
+
+    public static Client Default()
     {
-        if (string.IsNullOrEmpty(nip)) throw new ArgumentException("Value cannot be null or empty.", nameof(nip));
-        
-        Id = id;
+        return new Client(string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, true);
+    }
+    public Client(string name, string shortcut, string country, string address, string nip, bool isActive)
+    {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         Shortcut = shortcut ?? throw new ArgumentNullException(nameof(shortcut));
         Country = country ?? throw new ArgumentNullException(nameof(country));
