@@ -124,8 +124,6 @@
         }
 
         #endregion
-
-        private DataGridView dataGridViewInvoices;
         private DataGridViewTextBoxColumn clientIdDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn numberDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
@@ -134,5 +132,6 @@
         private DataGridViewTextBoxColumn issueDateDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private BindingSource invoiceBindingSource;
+        public DataGridView dataGridViewInvoices;
     }
 }

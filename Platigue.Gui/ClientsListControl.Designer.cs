@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             dataGridViewClients = new DataGridView();
+            clientBindingSource = new BindingSource(components);
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             shortcutDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -37,8 +38,6 @@
             addressDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             nIPDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             isActiveDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
-            invoicesDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            clientBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)dataGridViewClients).BeginInit();
             ((System.ComponentModel.ISupportInitialize)clientBindingSource).BeginInit();
             SuspendLayout();
@@ -49,7 +48,7 @@
             dataGridViewClients.AllowUserToDeleteRows = false;
             dataGridViewClients.AutoGenerateColumns = false;
             dataGridViewClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewClients.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, shortcutDataGridViewTextBoxColumn, countryDataGridViewTextBoxColumn, addressDataGridViewTextBoxColumn, nIPDataGridViewTextBoxColumn, isActiveDataGridViewCheckBoxColumn, invoicesDataGridViewTextBoxColumn });
+            dataGridViewClients.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nameDataGridViewTextBoxColumn, shortcutDataGridViewTextBoxColumn, countryDataGridViewTextBoxColumn, addressDataGridViewTextBoxColumn, nIPDataGridViewTextBoxColumn, isActiveDataGridViewCheckBoxColumn });
             dataGridViewClients.DataSource = clientBindingSource;
             dataGridViewClients.Dock = DockStyle.Fill;
             dataGridViewClients.Location = new Point(0, 0);
@@ -60,6 +59,10 @@
             dataGridViewClients.Size = new Size(630, 506);
             dataGridViewClients.TabIndex = 0;
             dataGridViewClients.SelectionChanged += dataGridViewClients_SelectionChanged;
+            // 
+            // clientBindingSource
+            // 
+            clientBindingSource.DataSource = typeof(Db.Client);
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -110,17 +113,6 @@
             isActiveDataGridViewCheckBoxColumn.Name = "isActiveDataGridViewCheckBoxColumn";
             isActiveDataGridViewCheckBoxColumn.ReadOnly = true;
             // 
-            // invoicesDataGridViewTextBoxColumn
-            // 
-            invoicesDataGridViewTextBoxColumn.DataPropertyName = "Invoices";
-            invoicesDataGridViewTextBoxColumn.HeaderText = "Invoices";
-            invoicesDataGridViewTextBoxColumn.Name = "invoicesDataGridViewTextBoxColumn";
-            invoicesDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // clientBindingSource
-            // 
-            clientBindingSource.DataSource = typeof(Db.Client);
-            // 
             // ClientsListControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -134,8 +126,8 @@
         }
 
         #endregion
-
-        private DataGridView dataGridViewClients;
+        private BindingSource clientBindingSource;
+        public DataGridView dataGridViewClients;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn shortcutDataGridViewTextBoxColumn;
@@ -143,7 +135,5 @@
         private DataGridViewTextBoxColumn addressDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn nIPDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn isActiveDataGridViewCheckBoxColumn;
-        private DataGridViewTextBoxColumn invoicesDataGridViewTextBoxColumn;
-        private BindingSource clientBindingSource;
     }
 }

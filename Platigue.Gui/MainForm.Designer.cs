@@ -31,7 +31,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            _clientsListControl = new ClientsListControl();
+            clientsListControl = new ClientsListControl();
             buttonAddClient = new Button();
             buttonRemoveClient = new Button();
             buttonEditClient = new Button();
@@ -39,14 +39,16 @@
             buttonRemoveInvoice = new Button();
             buttonEditInvoice = new Button();
             addInvoiceButton = new Button();
+            buttonExportClients = new Button();
+            buttonExportInvoices = new Button();
             SuspendLayout();
             // 
-            // _clientsListControl
+            // clientsListControl
             // 
-            _clientsListControl.Location = new Point(12, 12);
-            _clientsListControl.Name = "_clientsListControl";
-            _clientsListControl.Size = new Size(420, 254);
-            _clientsListControl.TabIndex = 1;
+            clientsListControl.Location = new Point(12, 12);
+            clientsListControl.Name = "clientsListControl";
+            clientsListControl.Size = new Size(420, 254);
+            clientsListControl.TabIndex = 1;
             // 
             // buttonAddClient
             // 
@@ -114,11 +116,33 @@
             addInvoiceButton.UseVisualStyleBackColor = true;
             addInvoiceButton.Click += addInvoiceButton_Click;
             // 
+            // buttonExportClients
+            // 
+            buttonExportClients.Location = new Point(300, 286);
+            buttonExportClients.Name = "buttonExportClients";
+            buttonExportClients.Size = new Size(75, 23);
+            buttonExportClients.TabIndex = 9;
+            buttonExportClients.Text = "button1";
+            buttonExportClients.UseVisualStyleBackColor = true;
+            buttonExportClients.Click += buttonExportClients_Click;
+            // 
+            // buttonExportInvoices
+            // 
+            buttonExportInvoices.Location = new Point(743, 286);
+            buttonExportInvoices.Name = "buttonExportInvoices";
+            buttonExportInvoices.Size = new Size(75, 23);
+            buttonExportInvoices.TabIndex = 10;
+            buttonExportInvoices.Text = "button1";
+            buttonExportInvoices.UseVisualStyleBackColor = true;
+            buttonExportInvoices.Click += buttonExportInvoices_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1195, 504);
+            Controls.Add(buttonExportInvoices);
+            Controls.Add(buttonExportClients);
             Controls.Add(buttonRemoveInvoice);
             Controls.Add(buttonEditInvoice);
             Controls.Add(addInvoiceButton);
@@ -126,7 +150,7 @@
             Controls.Add(buttonEditClient);
             Controls.Add(buttonRemoveClient);
             Controls.Add(buttonAddClient);
-            Controls.Add(_clientsListControl);
+            Controls.Add(clientsListControl);
             Name = "MainForm";
             Text = "MainForm";
             Load += MainForm_Load;
@@ -134,7 +158,7 @@
         }
 
         #endregion
-        private ClientsListControl _clientsListControl;
+        private ClientsListControl clientsListControl;
         private Button buttonAddClient;
         private Button buttonRemoveClient;
         private Button buttonEditClient;
@@ -142,5 +166,7 @@
         private Button buttonRemoveInvoice;
         private Button buttonEditInvoice;
         private Button addInvoiceButton;
+        private Button buttonExportClients;
+        private Button buttonExportInvoices;
     }
 }

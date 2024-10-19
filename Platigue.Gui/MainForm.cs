@@ -1,12 +1,26 @@
 using Microsoft.Data.SqlClient;
 using Platigue.Db;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Windows.Forms;
 
 namespace Platigue.Gui
 {
     public partial class MainForm : Form
     {
+        private void SaveChangesSafe()
+        {
+            void HandleException(DbUpdateException? exp)
+            {
+                if (exp == null)
+                    return;
+                MessageBox.Show(exp.ToString());
+            }
+
+            HandleException(_dbContext!.TrySaveChanges());
+        }
+
         private readonly PlatigueDbContext? _dbContext;
 
         public MainForm(PlatigueDbContext? dbContext = null)
@@ -18,12 +32,11 @@ namespace Platigue.Gui
         private void MainForm_Load(object sender, EventArgs e)
         {
             ReloadAll();
-
         }
 
         private void ReloadClients()
         {
-            _clientsListControl.Clients = _dbContext!.Clients.ToList();
+            clientsListControl.Clients = _dbContext!.Clients.ToList();
         }
 
         private void ReloadInvoices()
@@ -40,36 +53,36 @@ namespace Platigue.Gui
         private void buttonAddClient_Click(object sender, EventArgs e)
         {
             var dlg = new AddEditClientForm();
-            if (dlg.ShowDialog(this) == DialogResult.OK)
-            {
-                _dbContext!.Clients.Add(dlg.clientDetailsControl.Client);
-                _dbContext.SaveChanges();
-                ReloadClients();
-            }
+            if (dlg.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            _dbContext!.Clients.Add(dlg.clientDetailsControl.Client);
+            SaveChangesSafe();
+            ReloadClients();
         }
 
         private void buttonRemoveClient_Click(object sender, EventArgs e)
         {
-            if (_clientsListControl.SelectedClient == null)
+            if (clientsListControl.SelectedClient == null)
                 return;
 
-            _dbContext!.Clients.Remove(_clientsListControl.SelectedClient);
-            _dbContext.SaveChanges();
+            _dbContext!.Clients.Remove(clientsListControl.SelectedClient);
+            SaveChangesSafe();
             ReloadAll();
         }
 
         private void buttonEditClient_Click(object sender, EventArgs e)
         {
-            if (_clientsListControl.SelectedClient == null)
+            if (clientsListControl.SelectedClient == null)
                 return;
 
             var dlg = new AddEditClientForm();
-            dlg.clientDetailsControl.Client = _clientsListControl.SelectedClient;
+            dlg.clientDetailsControl.Client = clientsListControl.SelectedClient;
 
             if (dlg.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            _dbContext!.SaveChanges();
+            SaveChangesSafe();
             ReloadClients();
         }
 
@@ -82,10 +95,11 @@ namespace Platigue.Gui
             var dlg = new AddEditInvoiceForm();
             dlg.invoiceDetailsControl.InvoiceModel = invoiceModel;
 
-            if (dlg.ShowDialog(this) != DialogResult.OK) return;
+            if (dlg.ShowDialog(this) != DialogResult.OK)
+                return;
 
             _dbContext!.Invoices.Add(dlg.invoiceDetailsControl.InvoiceModel.ToInvoice());
-            _dbContext.SaveChanges();
+            SaveChangesSafe();
             ReloadAll();
         }
 
@@ -105,9 +119,45 @@ namespace Platigue.Gui
                 return;
 
             dlg.invoiceDetailsControl.InvoiceModel.Update(selectedInvoice);
-            _dbContext!.SaveChanges();
+            SaveChangesSafe();
 
             ReloadAll();
+        }
+
+        private void Export(DataGridView source)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "CSV files (*.csv)|*.csv",
+                Title = "Save as CSV"
+            };
+
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var exporter = new CsvDataExporter();
+            try
+            {
+                exporter.Export(source, saveFileDialog.FileName);
+                MessageBox.Show("Export successful!", "Export", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Error exporting data: " + ex.Message, "Export Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonExportClients_Click(object sender, EventArgs e)
+        {
+            Export(clientsListControl.dataGridViewClients);
+        }
+
+        private void buttonExportInvoices_Click(object sender, EventArgs e)
+        {
+            Export(invoicesListControl.dataGridViewInvoices);
         }
     }
 }
