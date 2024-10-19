@@ -35,29 +35,30 @@
             // 
             // clientDetailsControl
             // 
+            clientDetailsControl.AutoSize = true;
             clientDetailsControl.Location = new Point(12, 12);
             clientDetailsControl.Name = "clientDetailsControl";
-            clientDetailsControl.Size = new Size(488, 269);
+            clientDetailsControl.Size = new Size(330, 197);
             clientDetailsControl.TabIndex = 0;
             // 
             // button1
             // 
             button1.DialogResult = DialogResult.OK;
-            button1.Location = new Point(346, 393);
+            button1.Location = new Point(89, 215);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 1;
-            button1.Text = "button1";
+            button1.Text = "Ok";
             button1.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
             button2.DialogResult = DialogResult.Cancel;
-            button2.Location = new Point(425, 393);
+            button2.Location = new Point(170, 215);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 2;
-            button2.Text = "button2";
+            button2.Text = "Cancel";
             button2.UseVisualStyleBackColor = true;
             // 
             // AddEditClientForm
@@ -66,7 +67,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = button2;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(344, 248);
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(clientDetailsControl);
@@ -74,6 +75,7 @@
             Name = "AddEditClientForm";
             Text = "AddEditClientForm";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

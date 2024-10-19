@@ -36,7 +36,7 @@
             // button1
             // 
             button1.DialogResult = DialogResult.OK;
-            button1.Location = new Point(346, 393);
+            button1.Location = new Point(93, 258);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 1;
@@ -46,7 +46,7 @@
             // button2
             // 
             button2.DialogResult = DialogResult.Cancel;
-            button2.Location = new Point(425, 393);
+            button2.Location = new Point(172, 258);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 2;
@@ -55,9 +55,9 @@
             // 
             // invoiceDetailsControl
             // 
-            invoiceDetailsControl.Location = new Point(73, 28);
+            invoiceDetailsControl.Location = new Point(12, 12);
             invoiceDetailsControl.Name = "invoiceDetailsControl";
-            invoiceDetailsControl.Size = new Size(488, 269);
+            invoiceDetailsControl.Size = new Size(327, 228);
             invoiceDetailsControl.TabIndex = 3;
             // 
             // AddEditInvoiceForm
@@ -66,7 +66,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = button2;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(351, 302);
             Controls.Add(invoiceDetailsControl);
             Controls.Add(button2);
             Controls.Add(button1);

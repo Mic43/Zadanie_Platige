@@ -29,7 +29,7 @@ namespace Platigue.Gui
             InitializeComponent();
             Client = Client.Default();
 
-            textBoxName.DataBindings.Add("Text", bindingSourceMain, "Name", true, 
+            txtName.DataBindings.Add("Text", bindingSourceMain, "Name", true, 
                 DataSourceUpdateMode.OnPropertyChanged);
         }
     }
