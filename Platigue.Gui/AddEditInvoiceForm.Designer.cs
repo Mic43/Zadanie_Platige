@@ -72,7 +72,7 @@
             Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "AddEditInvoiceForm";
-            Text = "AddEditClientForm";
+            Text = "Invoice";
             ResumeLayout(false);
         }
 

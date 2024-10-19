@@ -98,7 +98,16 @@ namespace Platigue.Gui
             if (dlg.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            _dbContext!.Invoices.Add(dlg.invoiceDetailsControl.InvoiceModel.ToInvoice());
+            var invoice = dlg.invoiceDetailsControl.InvoiceModel.ToInvoice();
+
+            if (_dbContext.Invoices.Find(invoice.Number) != null)
+            {
+                MessageBox.Show("Duplicated id");
+                return;
+            }
+            
+            _dbContext!.Invoices.Add(invoice);
+
             SaveChangesSafe();
             ReloadAll();
         }
