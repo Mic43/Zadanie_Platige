@@ -158,5 +158,15 @@ namespace Platigue.Gui
         {
             Export(invoicesListControl.dataGridViewInvoices);
         }
+
+        private void buttonRemoveInvoice_Click(object sender, EventArgs e)
+        {
+            if (invoicesListControl.SelectedInvoice == null)
+                return;
+
+            _dbContext!.Invoices.Remove(invoicesListControl.SelectedInvoice);
+            SaveChangesSafe();
+            ReloadAll();
+        }
     }
 }

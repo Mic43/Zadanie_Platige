@@ -101,6 +101,7 @@
             buttonRemoveInvoice.TabIndex = 8;
             buttonRemoveInvoice.Text = "Remove";
             buttonRemoveInvoice.UseVisualStyleBackColor = true;
+            buttonRemoveInvoice.Click += buttonRemoveInvoice_Click;
             // 
             // buttonEditInvoice
             // 

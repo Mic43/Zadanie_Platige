@@ -15,7 +15,7 @@ namespace Platigue.Gui
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            var context = CreateContext(false);
+            var context = CreateContext(true);
             if (context == null)
             {
                 MessageBox.Show("Connection error");
@@ -37,7 +37,6 @@ namespace Platigue.Gui
             string databaseName = dialog.DatabaseName;
 
             // Use the collected data as needed
-
 
             var builder = new SqlConnectionStringBuilder()
             {
@@ -64,13 +63,11 @@ namespace Platigue.Gui
                         new Client("dsds3", "dsdsds", "dsdsds", "dsdsds", "dsdsds", false));
                 }
 
-
                 ctx.SaveChanges();
             }
 
             Func<string> getConnString =
                 useDefault ? () => PlatigueDbContextFactory.DefaultConnectionString : GetConnectionStringFromUser;
-
 
             var ctx = PlatigueDbContext.FromConnectionString(getConnString());
 
