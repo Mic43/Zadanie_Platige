@@ -154,7 +154,6 @@ namespace Platigue.Gui
         {
             Export(clientsListControl.dataGridViewClients);
         }
-
         private void buttonExportInvoices_Click(object sender, EventArgs e)
         {
             Export(invoicesListControl.dataGridViewInvoices);

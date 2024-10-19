@@ -10,8 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 public sealed class PlatigueDbContext : DbContext
 {
-    // private readonly string _connectionString;
-
     /// <inheritdoc />
     public PlatigueDbContext(DbContextOptions<PlatigueDbContext> options)
         : base(options)

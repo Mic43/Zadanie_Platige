@@ -45,94 +45,104 @@
             // 
             // clientsListControl
             // 
+            clientsListControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             clientsListControl.Location = new Point(12, 12);
             clientsListControl.Name = "clientsListControl";
-            clientsListControl.Size = new Size(420, 254);
+            clientsListControl.Size = new Size(1169, 254);
             clientsListControl.TabIndex = 1;
             // 
             // buttonAddClient
             // 
-            buttonAddClient.Location = new Point(51, 284);
+            buttonAddClient.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonAddClient.Location = new Point(12, 272);
             buttonAddClient.Name = "buttonAddClient";
             buttonAddClient.Size = new Size(75, 23);
             buttonAddClient.TabIndex = 2;
-            buttonAddClient.Text = "button1";
+            buttonAddClient.Text = "Add";
             buttonAddClient.UseVisualStyleBackColor = true;
             buttonAddClient.Click += buttonAddClient_Click;
             // 
             // buttonRemoveClient
             // 
-            buttonRemoveClient.Location = new Point(132, 284);
+            buttonRemoveClient.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonRemoveClient.Location = new Point(93, 272);
             buttonRemoveClient.Name = "buttonRemoveClient";
             buttonRemoveClient.Size = new Size(75, 23);
             buttonRemoveClient.TabIndex = 3;
-            buttonRemoveClient.Text = "button1";
+            buttonRemoveClient.Text = "Remove";
             buttonRemoveClient.UseVisualStyleBackColor = true;
             buttonRemoveClient.Click += buttonRemoveClient_Click;
             // 
             // buttonEditClient
             // 
-            buttonEditClient.Location = new Point(213, 284);
+            buttonEditClient.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonEditClient.Location = new Point(174, 272);
             buttonEditClient.Name = "buttonEditClient";
             buttonEditClient.Size = new Size(75, 23);
             buttonEditClient.TabIndex = 4;
-            buttonEditClient.Text = "button1";
+            buttonEditClient.Text = "Edit";
             buttonEditClient.UseVisualStyleBackColor = true;
             buttonEditClient.Click += buttonEditClient_Click;
             // 
             // invoicesListControl
             // 
-            invoicesListControl.Location = new Point(450, 12);
+            invoicesListControl.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            invoicesListControl.Location = new Point(12, 331);
             invoicesListControl.Name = "invoicesListControl";
-            invoicesListControl.Size = new Size(724, 254);
+            invoicesListControl.Size = new Size(1169, 285);
             invoicesListControl.TabIndex = 5;
             // 
             // buttonRemoveInvoice
             // 
-            buttonRemoveInvoice.Location = new Point(662, 284);
+            buttonRemoveInvoice.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonRemoveInvoice.Location = new Point(93, 622);
             buttonRemoveInvoice.Name = "buttonRemoveInvoice";
             buttonRemoveInvoice.Size = new Size(75, 23);
             buttonRemoveInvoice.TabIndex = 8;
-            buttonRemoveInvoice.Text = "button1";
+            buttonRemoveInvoice.Text = "Remove";
             buttonRemoveInvoice.UseVisualStyleBackColor = true;
             // 
             // buttonEditInvoice
             // 
-            buttonEditInvoice.Location = new Point(581, 284);
+            buttonEditInvoice.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonEditInvoice.Location = new Point(174, 622);
             buttonEditInvoice.Name = "buttonEditInvoice";
             buttonEditInvoice.Size = new Size(75, 23);
             buttonEditInvoice.TabIndex = 7;
-            buttonEditInvoice.Text = "button1";
+            buttonEditInvoice.Text = "Edit";
             buttonEditInvoice.UseVisualStyleBackColor = true;
             buttonEditInvoice.Click += buttonEditInvoice_Click;
             // 
             // addInvoiceButton
             // 
-            addInvoiceButton.Location = new Point(500, 284);
+            addInvoiceButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            addInvoiceButton.Location = new Point(12, 622);
             addInvoiceButton.Name = "addInvoiceButton";
             addInvoiceButton.Size = new Size(75, 23);
             addInvoiceButton.TabIndex = 6;
-            addInvoiceButton.Text = "button1";
+            addInvoiceButton.Text = "Add";
             addInvoiceButton.UseVisualStyleBackColor = true;
             addInvoiceButton.Click += addInvoiceButton_Click;
             // 
             // buttonExportClients
             // 
-            buttonExportClients.Location = new Point(300, 286);
+            buttonExportClients.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonExportClients.Location = new Point(255, 272);
             buttonExportClients.Name = "buttonExportClients";
             buttonExportClients.Size = new Size(75, 23);
             buttonExportClients.TabIndex = 9;
-            buttonExportClients.Text = "button1";
+            buttonExportClients.Text = "Export";
             buttonExportClients.UseVisualStyleBackColor = true;
             buttonExportClients.Click += buttonExportClients_Click;
             // 
             // buttonExportInvoices
             // 
-            buttonExportInvoices.Location = new Point(743, 286);
+            buttonExportInvoices.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            buttonExportInvoices.Location = new Point(255, 622);
             buttonExportInvoices.Name = "buttonExportInvoices";
             buttonExportInvoices.Size = new Size(75, 23);
             buttonExportInvoices.TabIndex = 10;
-            buttonExportInvoices.Text = "button1";
+            buttonExportInvoices.Text = "Export";
             buttonExportInvoices.UseVisualStyleBackColor = true;
             buttonExportInvoices.Click += buttonExportInvoices_Click;
             // 
@@ -140,7 +150,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1195, 504);
+            ClientSize = new Size(1193, 657);
             Controls.Add(buttonExportInvoices);
             Controls.Add(buttonExportClients);
             Controls.Add(buttonRemoveInvoice);
