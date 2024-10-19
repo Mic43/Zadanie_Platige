@@ -29,8 +29,13 @@ namespace Platigue.Gui
             InitializeComponent();
             Client = Client.Default();
 
-            txtName.DataBindings.Add("Text", bindingSourceMain, "Name", true, 
-                DataSourceUpdateMode.OnPropertyChanged);
+            txtName.DataBindings.Add("Text", bindingSourceMain, "Name", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtShortcut.DataBindings.Add("Text", bindingSourceMain, "Shortcut", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtCountry.DataBindings.Add("Text", bindingSourceMain, "Country", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtAddress.DataBindings.Add("Text", bindingSourceMain, "Address", true, DataSourceUpdateMode.OnPropertyChanged);
+            txtNIP.DataBindings.Add("Text", bindingSourceMain, "NIP", true, DataSourceUpdateMode.OnPropertyChanged);
+            chkIsActive.DataBindings.Add("Checked", bindingSourceMain, "IsActive", true, DataSourceUpdateMode.OnPropertyChanged);
+
         }
     }
 }
