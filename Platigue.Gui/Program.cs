@@ -15,10 +15,11 @@ namespace Platigue.Gui
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            var context = CreateContext();
+            var context = CreateContext(false);
             if (context == null)
             {
                 MessageBox.Show("Connection error");
+                Application.Exit();
                 return;
             }
 
@@ -27,16 +28,21 @@ namespace Platigue.Gui
 
         private static string GetConnectionStringFromUser()
         {
-            string username = "dsds";
-            string password = "";
+            using DatabaseConnectionDialog dialog = new DatabaseConnectionDialog();
+            if (dialog.ShowDialog() != DialogResult.OK) return null;
 
-            string dataSource = "dsds";
-            string dataBaseName = "dsdsds";
+            string username = dialog.Username;
+            string password = dialog.Password;
+            string serverAddress = dialog.ServerAddress;
+            string databaseName = dialog.DatabaseName;
+
+            // Use the collected data as needed
+
 
             var builder = new SqlConnectionStringBuilder()
             {
-                DataSource = dataSource,
-                InitialCatalog = dataBaseName,
+                DataSource = serverAddress,
+                InitialCatalog = databaseName,
                 UserID = username,
                 Password = password,
                 IntegratedSecurity = false
