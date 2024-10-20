@@ -184,6 +184,12 @@ public class DatabaseConnectionDialog : Form
         Enabled = true;
         progressBarConnection.Visible = false;
 
+        if (!CanConnect)
+        {
+            MessageBox.Show("Connection error");
+            return;
+        }
+
         DialogResult = DialogResult.OK;
         Close();
     }

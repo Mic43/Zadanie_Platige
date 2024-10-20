@@ -19,7 +19,6 @@ namespace Platigue.Gui
             var context = CreateContext(false);
             if (context == null)
             {
-                MessageBox.Show("Connection error");
                 Application.Exit();
                 return;
             }
