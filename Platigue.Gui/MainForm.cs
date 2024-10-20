@@ -181,8 +181,7 @@ namespace Platigue.Gui
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var results = _dbContext.GetInvoicesByClient().ToList();
-            results.ForEach(x => Trace.WriteLine(x.ToString()));
+            new ReportsViewerForm(_dbContext).ShowDialog(this);
         }
     }
 }

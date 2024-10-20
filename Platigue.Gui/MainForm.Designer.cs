@@ -41,7 +41,7 @@
             addInvoiceButton = new Button();
             buttonExportClients = new Button();
             buttonExportInvoices = new Button();
-            button1 = new Button();
+            buttonReports = new Button();
             SuspendLayout();
             // 
             // clientsListControl
@@ -148,22 +148,23 @@
             buttonExportInvoices.UseVisualStyleBackColor = true;
             buttonExportInvoices.Click += buttonExportInvoices_Click;
             // 
-            // button1
+            // buttonReports
             // 
-            button1.Location = new Point(491, 625);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 11;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            buttonReports.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonReports.Location = new Point(1106, 622);
+            buttonReports.Name = "buttonReports";
+            buttonReports.Size = new Size(75, 23);
+            buttonReports.TabIndex = 11;
+            buttonReports.Text = "Reports";
+            buttonReports.UseVisualStyleBackColor = true;
+            buttonReports.Click += button1_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1193, 657);
-            Controls.Add(button1);
+            Controls.Add(buttonReports);
             Controls.Add(buttonExportInvoices);
             Controls.Add(buttonExportClients);
             Controls.Add(buttonRemoveInvoice);
@@ -191,6 +192,6 @@
         private Button addInvoiceButton;
         private Button buttonExportClients;
         private Button buttonExportInvoices;
-        private Button button1;
+        private Button buttonReports;
     }
 }
