@@ -17,7 +17,7 @@ public sealed class PlatigueDbContext : DbContext
 
     }
 
-    public static PlatigueDbContext FromConnectionString (string connectionString)
+    public static PlatigueDbContext FromConnectionString (string? connectionString)
     {
         var optionsBuilder = new DbContextOptionsBuilder<PlatigueDbContext>();
         optionsBuilder.UseSqlServer(connectionString);

@@ -15,7 +15,7 @@ namespace Platigue.Gui
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            var context = CreateContext(true);
+            var context = CreateContext(false);
             if (context == null)
             {
                 MessageBox.Show("Connection error");
@@ -26,27 +26,12 @@ namespace Platigue.Gui
             Application.Run(new MainForm(context));
         }
 
-        private static string GetConnectionStringFromUser()
+        private static PlatigueDbContext? GetConnectionStringFromUser()
         {
             using DatabaseConnectionDialog dialog = new DatabaseConnectionDialog();
             if (dialog.ShowDialog() != DialogResult.OK) return null;
 
-            string username = dialog.Username;
-            string password = dialog.Password;
-            string serverAddress = dialog.ServerAddress;
-            string databaseName = dialog.DatabaseName;
-
-            // Use the collected data as needed
-
-            var builder = new SqlConnectionStringBuilder()
-            {
-                DataSource = serverAddress,
-                InitialCatalog = databaseName,
-                UserID = username,
-                Password = password,
-                IntegratedSecurity = false
-            };
-            return builder.ConnectionString;
+            return dialog.CanConnect ? dialog.Context : null;
         }
         private static PlatigueDbContext? CreateContext(bool useDefault = true)
         {
@@ -54,27 +39,46 @@ namespace Platigue.Gui
             {
                 if (!ctx.Clients.Any() && !ctx.Invoices.Any())
                 {
-                    var client = new Client("dsds", "dsdsds", "dsdsds", "dsdsds", "dsdsds", true);
-                    client.AddInvoice(new Invoice("2121", client,20,"PLN",10,DateTime.Now,"kwa"));
-                    
+                    // Client 1
+                    var client1 = new Client("John Doe", "JD", "USA", "123 Main St, New York, NY", "1234567890", true);
+                    client1.AddInvoice(new Invoice("INV001", client1, 150.00m, "USD", 0.00m, DateTime.Now.AddDays(-10), "Consulting Services"));
+
+                    // Client 2
+                    var client2 = new Client("Jane Smith", "JS", "Canada", "456 Elm St, Toronto, ON", "9876543210", false);
+                    client2.AddInvoice(new Invoice("INV002", client2, 250.00m, "CAD", 25.00m, DateTime.Now.AddDays(-5), "Web Development"));
+                    client2.AddInvoice(new Invoice("INV003", client2, 100.00m, "CAD", 10.00m, DateTime.Now.AddDays(-2), "Design Services"));
+
+                    // Client 3
+                    var client3 = new Client("Alice Johnson", "AJ", "UK", "789 Oak St, London", "5555555555", true);
+                    client3.AddInvoice(new Invoice("INV004", client3, 300.00m, "GBP", 30.00m, DateTime.Now.AddDays(-15), "Marketing Strategy"));
+
+                    // Client 4
+                    var client4 = new Client("Bob Brown", "BB", "Germany", "321 Pine St, Berlin", "1112223333", false);
+                    client4.AddInvoice(new Invoice("INV005", client4, 450.00m, "EUR", 45.00m, DateTime.Now.AddDays(-1), "SEO Services"));
+                    client4.AddInvoice(new Invoice("INV006", client4, 200.00m, "EUR", 20.00m, DateTime.Now.AddDays(-3), "Content Writing"));
+
+                    // Client 5
+                    var client5 = new Client("Charlie Green", "CG", "Australia", "654 Maple St, Sydney", "4443332222", true);
+                    client5.AddInvoice(new Invoice("INV007", client5, 500.00m, "AUD", 50.00m, DateTime.Now.AddDays(-20), "App Development"));
+
+                    // Additional clients with different countries
+                    var client6 = new Client("Diana Prince", "DP", "Brazil", "987 Cedar St, São Paulo", "8887776666", true);
+                    var client7 = new Client("Ethan Hunt", "EH", "Japan", "159 Birch St, Tokyo", "9998887777", false);
+
                     ctx.Clients.AddRange(
-                        client,
-                        new Client("dsds2", "dsdsds", "dsdsds", "dsdsds", "dsdsds", false),
-                        new Client("dsds3", "dsdsds", "dsdsds", "dsdsds", "dsdsds", false));
+                        client1, client2, client3, client4, client5, client6, client7);
                 }
 
                 ctx.SaveChanges();
             }
 
-            Func<string> getConnString =
-                useDefault ? () => PlatigueDbContextFactory.DefaultConnectionString : GetConnectionStringFromUser;
+            Func<PlatigueDbContext?> getContext =
+                useDefault ? () => PlatigueDbContext.FromConnectionString(PlatigueDbContextFactory.DefaultConnectionString) :
+                    GetConnectionStringFromUser;
 
-            var ctx = PlatigueDbContext.FromConnectionString(getConnString());
-
-            if (!ctx.Database.CanConnect())
-                return null;
-
-            TrySeedData(ctx);
+            var ctx = getContext();
+            if (ctx != null)
+                TrySeedData(ctx);
             return ctx;
         }
     }

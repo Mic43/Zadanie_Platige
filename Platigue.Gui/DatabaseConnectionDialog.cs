@@ -1,3 +1,7 @@
+using Microsoft.Data.SqlClient;
+using Platigue.Db;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+
 namespace Platigue.Gui;
 
 public class DatabaseConnectionDialog : Form
@@ -6,12 +10,21 @@ public class DatabaseConnectionDialog : Form
     private TextBox _txtPassword;
     private TextBox _txtServerAddress;
     private TextBox _txtDatabaseName;
+    private Label lblUsername;
+    private Label lblPassword;
+    private Label lblServerAddress;
+    private Label lblDatabaseName;
+    private ProgressBar progressBarConnection;
     private Button _btnSubmit;
+    private PlatigueDbContext _context;
 
     public string Username { get; private set; }
     public string Password { get; private set; }
     public string ServerAddress { get; private set; }
     public string DatabaseName { get; private set; }
+    public bool CanConnect { get; private set; }
+
+    public PlatigueDbContext Context => _context;
 
     public DatabaseConnectionDialog()
     {
@@ -20,98 +33,157 @@ public class DatabaseConnectionDialog : Form
 
     private void InitializeComponent()
     {
-        this.FormBorderStyle = FormBorderStyle.FixedDialog;
-        this.Text = "Database Connection";
-        this.ClientSize = new System.Drawing.Size(340, 230);
-
-        this.SuspendLayout();
-
-        Label lblUsername = new Label();
-        lblUsername.Text = "Username:";
-        lblUsername.Left = 10;
-        lblUsername.Top = 20;
-        lblUsername.Width = 100;
-
-        Label lblPassword = new Label();
-        lblPassword.Text = "Password:";
-        lblPassword.Left = 10;
-        lblPassword.Top = 60;
-        lblPassword.Width = 100;
-
-        Label lblServerAddress = new Label();
-        lblServerAddress.Text = "Server Address:";
-        lblServerAddress.Left = 10;
-        lblServerAddress.Top = 100;
-        lblServerAddress.Width = 100;
-
-        Label lblDatabaseName = new Label();
-        lblDatabaseName.Text = "Database Name:";
-        lblDatabaseName.Left = 10;
-        lblDatabaseName.Top = 140;
-        lblDatabaseName.Width = 100;
-
-        // Create text boxes
+        lblUsername = new Label();
+        lblPassword = new Label();
+        lblServerAddress = new Label();
+        lblDatabaseName = new Label();
         _txtUsername = new TextBox();
-        _txtUsername.Left = 120;
-        _txtUsername.Top = 20;
-        _txtUsername.Width = 200;
-
         _txtPassword = new TextBox();
-        _txtPassword.Left = 120;
-        _txtPassword.Top = 60;
-        _txtPassword.Width = 200;
-        _txtPassword.PasswordChar = '*';
-
         _txtServerAddress = new TextBox();
-        _txtServerAddress.Left = 120;
-        _txtServerAddress.Top = 100;
-        _txtServerAddress.Width = 200;
-
         _txtDatabaseName = new TextBox();
-        _txtDatabaseName.Left = 120;
-        _txtDatabaseName.Top = 140;
-        _txtDatabaseName.Width = 200;
-
-        // Create button
         _btnSubmit = new Button();
+        progressBarConnection = new ProgressBar();
+        SuspendLayout();
+        // 
+        // lblUsername
+        // 
+        lblUsername.Location = new Point(10, 20);
+        lblUsername.Name = "lblUsername";
+        lblUsername.Size = new Size(100, 23);
+        lblUsername.TabIndex = 0;
+        lblUsername.Text = "Username:";
+        // 
+        // lblPassword
+        // 
+        lblPassword.Location = new Point(10, 60);
+        lblPassword.Name = "lblPassword";
+        lblPassword.Size = new Size(100, 23);
+        lblPassword.TabIndex = 1;
+        lblPassword.Text = "Password:";
+        // 
+        // lblServerAddress
+        // 
+        lblServerAddress.Location = new Point(10, 100);
+        lblServerAddress.Name = "lblServerAddress";
+        lblServerAddress.Size = new Size(100, 23);
+        lblServerAddress.TabIndex = 2;
+        lblServerAddress.Text = "Server Address:";
+        // 
+        // lblDatabaseName
+        // 
+        lblDatabaseName.Location = new Point(10, 140);
+        lblDatabaseName.Name = "lblDatabaseName";
+        lblDatabaseName.Size = new Size(100, 23);
+        lblDatabaseName.TabIndex = 3;
+        lblDatabaseName.Text = "Database Name:";
+        // 
+        // _txtUsername
+        // 
+        _txtUsername.Location = new Point(120, 20);
+        _txtUsername.Name = "_txtUsername";
+        _txtUsername.Size = new Size(200, 23);
+        _txtUsername.TabIndex = 4;
+        // 
+        // _txtPassword
+        // 
+        _txtPassword.Location = new Point(120, 60);
+        _txtPassword.Name = "_txtPassword";
+        _txtPassword.PasswordChar = '*';
+        _txtPassword.Size = new Size(200, 23);
+        _txtPassword.TabIndex = 5;
+        // 
+        // _txtServerAddress
+        // 
+        _txtServerAddress.Location = new Point(120, 100);
+        _txtServerAddress.Name = "_txtServerAddress";
+        _txtServerAddress.Size = new Size(200, 23);
+        _txtServerAddress.TabIndex = 6;
+        // 
+        // _txtDatabaseName
+        // 
+        _txtDatabaseName.Location = new Point(120, 140);
+        _txtDatabaseName.Name = "_txtDatabaseName";
+        _txtDatabaseName.Size = new Size(200, 23);
+        _txtDatabaseName.TabIndex = 7;
+        // 
+        // _btnSubmit
+        // 
+        _btnSubmit.Location = new Point(120, 189);
+        _btnSubmit.Name = "_btnSubmit";
+        _btnSubmit.Size = new Size(100, 23);
+        _btnSubmit.TabIndex = 8;
         _btnSubmit.Text = "Submit";
-        _btnSubmit.Left = 120;
-        _btnSubmit.Top = 180;
-        _btnSubmit.Width = 100;
         _btnSubmit.Click += BtnSubmit_Click;
-
-
-        this.Text = "Database Connection";
-        this.ClientSize = new System.Drawing.Size(340, 230);
-        this.Controls.Add(lblUsername);
-        this.Controls.Add(lblPassword);
-        this.Controls.Add(lblServerAddress);
-        this.Controls.Add(lblDatabaseName);
-        this.Controls.Add(_txtUsername);
-        this.Controls.Add(_txtPassword);
-        this.Controls.Add(_txtServerAddress);
-        this.Controls.Add(_txtDatabaseName);
-        this.Controls.Add(_btnSubmit);
-
-        this.ResumeLayout(false);
+        // 
+        // progressBarConnection
+        // 
+        progressBarConnection.Location = new Point(10, 169);
+        progressBarConnection.MarqueeAnimationSpeed = 5;
+        progressBarConnection.Name = "progressBarConnection";
+        progressBarConnection.Size = new Size(316, 14);
+        progressBarConnection.Style = ProgressBarStyle.Marquee;
+        progressBarConnection.TabIndex = 9;
+        progressBarConnection.Visible = false;
+        // 
+        // DatabaseConnectionDialog
+        // 
+        ClientSize = new Size(340, 218);
+        Controls.Add(progressBarConnection);
+        Controls.Add(lblUsername);
+        Controls.Add(lblPassword);
+        Controls.Add(lblServerAddress);
+        Controls.Add(lblDatabaseName);
+        Controls.Add(_txtUsername);
+        Controls.Add(_txtPassword);
+        Controls.Add(_txtServerAddress);
+        Controls.Add(_txtDatabaseName);
+        Controls.Add(_btnSubmit);
+        FormBorderStyle = FormBorderStyle.FixedDialog;
+        Name = "DatabaseConnectionDialog";
+        Text = "Database Connection";
+        ResumeLayout(false);
+        PerformLayout();
     }
 
-    private void BtnSubmit_Click(object sender, EventArgs e)
+    private async void BtnSubmit_Click(object sender, EventArgs e)
     {
-        // Collect data
+      
         Username = _txtUsername.Text;
         Password = _txtPassword.Text;
         ServerAddress = _txtServerAddress.Text;
         DatabaseName = _txtDatabaseName.Text;
 
-        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) ||
-            string.IsNullOrWhiteSpace(ServerAddress) || string.IsNullOrWhiteSpace(DatabaseName))
+        if (string.IsNullOrWhiteSpace(ServerAddress) || string.IsNullOrWhiteSpace(DatabaseName))
         {
             MessageBox.Show("Please fill in all fields.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
-        this.DialogResult = DialogResult.OK;
-        this.Close();
+        void BuildConnString()
+        {
+            var builder = new SqlConnectionStringBuilder()
+            {
+                DataSource = ServerAddress,
+                InitialCatalog = DatabaseName,
+                UserID = Username,
+                Password = Password,
+                IntegratedSecurity = false
+            };
+            var con = builder.ConnectionString;
+            _context = PlatigueDbContext.FromConnectionString(con);
+        }
+
+        BuildConnString();
+
+        Enabled = false;
+        progressBarConnection.Visible = true;
+
+        CanConnect = await _context.Database.CanConnectAsync();
+
+        Enabled = true;
+        progressBarConnection.Visible = false;
+
+        DialogResult = DialogResult.OK;
+        Close();
     }
 }
