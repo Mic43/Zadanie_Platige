@@ -15,8 +15,6 @@
         {
             if (disposing && (components != null))
             {
-                if (_dbContext != null) 
-                    _dbContext.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);

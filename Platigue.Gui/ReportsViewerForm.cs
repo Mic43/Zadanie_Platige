@@ -13,27 +13,36 @@ namespace Platigue.Gui
 {
     public partial class ReportsViewerForm : Form
     {
-        private readonly PlatigueDbContext? _dbContext;
+        private readonly DbContextFactory? _dbContextFactory;
 
-        public ReportsViewerForm(PlatigueDbContext? dbContext = null)
+        public ReportsViewerForm(DbContextFactory dbContextFactory = null)
         {
-            _dbContext = dbContext;
+            _dbContextFactory = dbContextFactory;
             InitializeComponent();
         }
 
         private void reload1Button_Click(object sender, EventArgs e)
         {
-            dataGridViewGetClientsByContry.DataSource = _dbContext.GetClientsCountByCountry().ToList();
+            using (var ctx = _dbContextFactory.Create())
+            {
+                dataGridViewGetClientsByContry.DataSource = ctx.GetClientsCountByCountry().ToList();
+            }
         }
 
         private void buttonReload2_Click(object sender, EventArgs e)
         {
-            dataGridViewGetInvoicesValueByMonth.DataSource = _dbContext.GetInvoicesValueByMonth().ToList();
+            using (var ctx = _dbContextFactory.Create())
+            {
+                dataGridViewGetInvoicesValueByMonth.DataSource = ctx.GetInvoicesValueByMonth().ToList();
+            }
         }
 
         private void buttonReload3_Click(object sender, EventArgs e)
         {
-            dataGridViewGetInvoicesByClient.DataSource = _dbContext.GetInvoicesByClient().ToList();
+            using (var ctx = _dbContextFactory.Create())
+            {
+                dataGridViewGetInvoicesByClient.DataSource = ctx.GetInvoicesByClient().ToList();
+            }
         }
     }
 }

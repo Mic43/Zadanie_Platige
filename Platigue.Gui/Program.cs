@@ -16,26 +16,26 @@ namespace Platigue.Gui
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            var context = CreateContext(true);
-            if (context == null)
+            string? conn = GetConnectionString(false);
+            if (conn == null)
             {
                 Application.Exit();
                 return;
             }
 
-            Application.Run(new MainForm(context));
+            Application.Run(new MainForm(new DbContextFactory(conn)));
         }
 
-        private static PlatigueDbContext? GetConnectionStringFromUser()
+        private static string? GetConnectionStringFromUser()
         {
             using DatabaseConnectionDialog dialog = new DatabaseConnectionDialog();
             if (dialog.ShowDialog() != DialogResult.OK) return null;
 
-            return dialog.CanConnect ? dialog.Context : null;
+            return dialog.CanConnect ? dialog.ConnectionString : null;
         }
-        private static PlatigueDbContext? CreateContext(bool useDefault = true)
+        private static string? GetConnectionString(bool useDefault = true)
         {
-            void PrepareDb(PlatigueDbContext platigueDbContext)
+            void PrepareDb(string conn)
             {
                 void TrySeedData(PlatigueDbContext ctx)
                 {
@@ -74,20 +74,23 @@ namespace Platigue.Gui
                     ctx.SaveChanges();
                 }
 
-                platigueDbContext.Database.Migrate();
-                TrySeedData(platigueDbContext);
+                using (var platigueDbContext = PlatigueDbContext.FromConnectionString(conn))
+                {
+                    platigueDbContext.Database.Migrate();
+                    TrySeedData(platigueDbContext);
+                }
             }
 
-            Func<PlatigueDbContext?> getContext =
-                useDefault ? () => PlatigueDbContext.FromConnectionString(PlatigueDbContextFactory.DefaultConnectionString) :
+            Func<string?> getConnString =
+                useDefault ? () => PlatigueDbContextFactory.DefaultConnectionString :
                     GetConnectionStringFromUser;
 
-            var ctx = getContext();
-            if (ctx == null)
-                return ctx;
+            var conn = getConnString();
+            if (conn == null)
+                return null;
 
-            PrepareDb(ctx);
-            return ctx;
+            PrepareDb(conn);
+            return conn;
         }
     }
 }

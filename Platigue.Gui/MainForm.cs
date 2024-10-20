@@ -6,12 +6,15 @@ using Microsoft.EntityFrameworkCore;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Windows.Forms;
 using Platigue.Gui.Export;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Platigue.Gui
 {
     public partial class MainForm : Form
     {
-        private void SaveChangesSafe()
+        private readonly DbContextFactory _dbContextFactory;
+
+        private void SaveChangesSafe(PlatigueDbContext context)
         {
             void HandleException(DbUpdateException? exp)
             {
@@ -20,14 +23,12 @@ namespace Platigue.Gui
                 MessageBox.Show(exp.ToString());
             }
 
-            HandleException(_dbContext!.TrySaveChanges());
+            HandleException(context.TrySaveChanges());
         }
 
-        private readonly PlatigueDbContext? _dbContext;
-
-        public MainForm(PlatigueDbContext? dbContext = null)
+        public MainForm(DbContextFactory dbContextFactory = null)
         {
-            _dbContext = dbContext;
+            _dbContextFactory = dbContextFactory;
             InitializeComponent();
         }
 
@@ -36,20 +37,11 @@ namespace Platigue.Gui
             ReloadAll();
         }
 
-        private void ReloadClients()
-        {
-            clientsListControl.Clients = _dbContext!.Clients.ToList();
-        }
-
-        private void ReloadInvoices()
-        {
-            invoicesListControl.Invoices = _dbContext!.Invoices.ToList();
-        }
-
         private void ReloadAll()
         {
-            ReloadClients();
-            ReloadInvoices();
+            using var dbContext = _dbContextFactory.Create();
+            clientsListControl.Clients = dbContext.Clients.ToList();
+            invoicesListControl.Invoices = dbContext.Invoices.ToList();
         }
 
         private void buttonAddClient_Click(object sender, EventArgs e)
@@ -58,9 +50,12 @@ namespace Platigue.Gui
             if (dlg.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            _dbContext!.Clients.Add(dlg.clientDetailsControl.Client);
-            SaveChangesSafe();
-            ReloadClients();
+            using (var dbContext = _dbContextFactory.Create())
+            {
+                dbContext.Clients.Add(dlg.clientDetailsControl.Client);
+                SaveChangesSafe(dbContext);
+            }
+            ReloadAll();
         }
 
         private void buttonRemoveClient_Click(object sender, EventArgs e)
@@ -68,8 +63,12 @@ namespace Platigue.Gui
             if (clientsListControl.SelectedClient == null)
                 return;
 
-            _dbContext!.Clients.Remove(clientsListControl.SelectedClient);
-            SaveChangesSafe();
+            using (var dbContext = _dbContextFactory.Create())
+            {
+                dbContext.Clients.Remove(clientsListControl.SelectedClient);
+                SaveChangesSafe(dbContext);
+            }
+
             ReloadAll();
         }
 
@@ -78,66 +77,76 @@ namespace Platigue.Gui
             if (clientsListControl.SelectedClient == null)
                 return;
 
-            var dlg = new AddEditClientForm();
-            dlg.clientDetailsControl.Client = clientsListControl.SelectedClient;
-
-            if (dlg.ShowDialog(this) != DialogResult.OK)
+            using (var dbContext = _dbContextFactory.Create())
             {
-                _dbContext!.Entry(clientsListControl.SelectedClient).Reload();
-                ReloadClients();
-                return;
+                var dlg = new AddEditClientForm();
+                dlg.clientDetailsControl.Client = dbContext.Clients.Find(clientsListControl.SelectedClient.Id);
+
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                SaveChangesSafe(dbContext);
             }
 
-            SaveChangesSafe();
-            ReloadClients();
+            ReloadAll();
         }
 
         private void addInvoiceButton_Click(object sender, EventArgs e)
         {
-            var invoiceModel = InvoiceModel.Default();
-            invoiceModel.Clients.AddRange(_dbContext!.Clients.ToList());
-            invoiceModel.SelectedClient = invoiceModel.Clients.First();
-
-            var dlg = new AddEditInvoiceForm();
-            dlg.invoiceDetailsControl.InvoiceModel = invoiceModel;
-
-            if (dlg.ShowDialog(this) != DialogResult.OK)
-                return;
-
-            var invoice = dlg.invoiceDetailsControl.InvoiceModel.ToInvoice();
-
-            if (_dbContext.Invoices.Find(invoice.Number) != null)
+            using (var dbContext = _dbContextFactory.Create())
             {
-                MessageBox.Show("Duplicated id");
-                return;
+                var invoiceModel = InvoiceModel.Default();
+                invoiceModel.Clients.AddRange(dbContext.Clients.ToList());
+                invoiceModel.SelectedClient = invoiceModel.Clients.First();
+
+                var dlg = new AddEditInvoiceForm();
+                dlg.invoiceDetailsControl.InvoiceModel = invoiceModel;
+
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var invoice = dlg.invoiceDetailsControl.InvoiceModel.ToInvoice();
+
+                if (dbContext.Invoices.Find(invoice.Number) != null)
+                {
+                    MessageBox.Show("Duplicated id");
+                    return;
+                }
+
+                dbContext.Invoices.Add(invoice);
+
+                SaveChangesSafe(dbContext);
             }
-
-            _dbContext!.Invoices.Add(invoice);
-
-            SaveChangesSafe();
             ReloadAll();
         }
 
         private void buttonEditInvoice_Click(object sender, EventArgs e)
         {
-            var selectedInvoice = invoicesListControl.SelectedInvoice;
+            var invoice = invoicesListControl.SelectedInvoice;
 
-            if (selectedInvoice == null)
+            if (invoice == null)
                 return;
 
             var dlg = new AddEditInvoiceForm();
-            var clients = _dbContext!.Clients.ToList();
-            Client selectedClient = clients.Single(x => x.Id == selectedInvoice.ClientId);
-            dlg.invoiceDetailsControl.InvoiceModel = new InvoiceModel(selectedInvoice, clients, selectedClient);
-
-            if (dlg.ShowDialog(this) != DialogResult.OK)
+            using (var dbContext = _dbContextFactory.Create())
             {
-                return;
+                string selectedInvoiceId = invoice.Number;
+                var selectedInvoice = dbContext.Invoices.Find(selectedInvoiceId);
+                
+                var clients = dbContext.Clients.ToList();
+                Client selectedClient = clients.Single(x => x.Id == selectedInvoice.ClientId);
+                dlg.invoiceDetailsControl.InvoiceModel = new InvoiceModel(selectedInvoice, clients, selectedClient);
+
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                dlg.invoiceDetailsControl.InvoiceModel.Update(selectedInvoice);
+                SaveChangesSafe(dbContext);
             }
-
-            dlg.invoiceDetailsControl.InvoiceModel.Update(selectedInvoice);
-            SaveChangesSafe();
-
             ReloadAll();
         }
 
@@ -150,7 +159,7 @@ namespace Platigue.Gui
 
 
             var exporter = new ExporterFactory().Create(exportDialog.SelectedExportType);
-            
+
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = exportDialog.SelectedExportType.GetFilterString(),
@@ -186,15 +195,18 @@ namespace Platigue.Gui
         {
             if (invoicesListControl.SelectedInvoice == null)
                 return;
+            using (var dbContext = _dbContextFactory.Create())
+            {
+                dbContext.Invoices.Remove(invoicesListControl.SelectedInvoice);
+                SaveChangesSafe(dbContext);
+            }
 
-            _dbContext!.Invoices.Remove(invoicesListControl.SelectedInvoice);
-            SaveChangesSafe();
             ReloadAll();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            new ReportsViewerForm(_dbContext).ShowDialog(this);
+            new ReportsViewerForm(_dbContextFactory).ShowDialog(this);
         }
     }
 }

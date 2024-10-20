@@ -17,14 +17,15 @@ public class DatabaseConnectionDialog : Form
     private ProgressBar progressBarConnection;
     private Button _btnSubmit;
     private PlatigueDbContext _context;
+    private string _connectionString;
+
+    public string ConnectionString => _connectionString;
 
     public string Username { get; private set; }
     public string Password { get; private set; }
     public string ServerAddress { get; private set; }
     public string DatabaseName { get; private set; }
     public bool CanConnect { get; private set; }
-
-    public PlatigueDbContext Context => _context;
 
     public DatabaseConnectionDialog()
     {
@@ -170,8 +171,8 @@ public class DatabaseConnectionDialog : Form
                 Password = Password,
                 IntegratedSecurity = false
             };
-            var con = builder.ConnectionString;
-            _context = PlatigueDbContext.FromConnectionString(con);
+            _connectionString = builder.ConnectionString;
+            _context = PlatigueDbContext.FromConnectionString(_connectionString);
         }
 
         BuildConnString();
