@@ -20,7 +20,8 @@ namespace Platigue.Gui
             set
             {
                 _client = value;
-                bindingSourceMain.DataSource = _client; //?? Client.Default();
+                bindingSourceMain.DataSource = _client;
+                bindingSourceMain.ResetBindings(false);
             }
         }
 

@@ -23,6 +23,7 @@ namespace Platigue.Gui
             {
                 _invoices = value;
                 invoiceBindingSource.DataSource = _invoices;
+                invoiceBindingSource.ResetBindings(false);
             }
         }
 

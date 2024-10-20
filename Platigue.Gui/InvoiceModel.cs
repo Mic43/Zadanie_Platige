@@ -43,6 +43,7 @@ public class InvoiceModel
         existing.Client = SelectedClient;
         existing.Currency = Currency;
         existing.VAT = VAT;
+        existing.Value = Value;
         existing.IssueDate = IssueDate;
         existing.Description = Description;
     }

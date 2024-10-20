@@ -72,6 +72,7 @@
             Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "AddEditInvoiceForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Invoice";
             ResumeLayout(false);
         }

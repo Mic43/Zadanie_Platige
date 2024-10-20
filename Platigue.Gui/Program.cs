@@ -16,7 +16,7 @@ namespace Platigue.Gui
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            var context = CreateContext(false);
+            var context = CreateContext(true);
             if (context == null)
             {
                 Application.Exit();

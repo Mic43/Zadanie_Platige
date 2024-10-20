@@ -21,6 +21,7 @@ namespace Platigue.Gui
             {
                 _invoiceModel = value;
                 bindingSourceMain.DataSource = _invoiceModel;
+                bindingSourceMain.ResetBindings(false);
             }
         }
 

@@ -73,6 +73,7 @@
             Controls.Add(clientDetailsControl);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "AddEditClientForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "AddEditClientForm";
             ResumeLayout(false);
             PerformLayout();

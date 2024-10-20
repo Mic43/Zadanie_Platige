@@ -82,7 +82,11 @@ namespace Platigue.Gui
             dlg.clientDetailsControl.Client = clientsListControl.SelectedClient;
 
             if (dlg.ShowDialog(this) != DialogResult.OK)
+            {
+                _dbContext!.Entry(clientsListControl.SelectedClient).Reload();
+                ReloadClients();
                 return;
+            }
 
             SaveChangesSafe();
             ReloadClients();
@@ -127,7 +131,9 @@ namespace Platigue.Gui
             dlg.invoiceDetailsControl.InvoiceModel = new InvoiceModel(selectedInvoice, clients, selectedClient);
 
             if (dlg.ShowDialog(this) != DialogResult.OK)
+            {
                 return;
+            }
 
             dlg.invoiceDetailsControl.InvoiceModel.Update(selectedInvoice);
             SaveChangesSafe();

@@ -23,6 +23,7 @@ namespace Platigue.Gui
             {
                 _clients = value;
                 clientBindingSource.DataSource = _clients;
+                clientBindingSource.ResetBindings(false);
             }
         }
 
