@@ -1,4 +1,4 @@
-﻿namespace Platigue.Gui;
+﻿namespace Platigue.Gui.Export;
 
 public interface IDataExporter
 {

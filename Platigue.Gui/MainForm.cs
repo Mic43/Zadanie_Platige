@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Windows.Forms;
+using Platigue.Gui.Export;
 
 namespace Platigue.Gui
 {
@@ -136,16 +137,22 @@ namespace Platigue.Gui
 
         private void Export(DataGridView source)
         {
+            var exportDialog = new ExportDialog();
+
+            if (exportDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+
+            var exporter = new ExporterFactory().Create(exportDialog.SelectedExportType);
+            
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "CSV files (*.csv)|*.csv",
-                Title = "Save as CSV"
+                Filter = exportDialog.SelectedExportType.GetFilterString(),
             };
 
             if (saveFileDialog.ShowDialog() != DialogResult.OK)
                 return;
 
-            var exporter = new CsvDataExporter();
             try
             {
                 exporter.Export(source, saveFileDialog.FileName);

@@ -20,21 +20,64 @@ public class DatabaseConnectionDialog : Form
 
     private void InitializeComponent()
     {
-        FormBorderStyle = FormBorderStyle.FixedDialog;
+        this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        this.Text = "Database Connection";
+        this.ClientSize = new System.Drawing.Size(340, 230);
 
-        Label lblUsername = new Label { Text = "Username:", Left = 10, Top = 20, Width = 100 };
-        Label lblPassword = new Label { Text = "Password:", Left = 10, Top = 60, Width = 100 };
-        Label lblServerAddress = new Label { Text = "Server Address:", Left = 10, Top = 100, Width = 100 };
-        Label lblDatabaseName = new Label { Text = "Database Name:", Left = 10, Top = 140, Width = 100 };
+        this.SuspendLayout();
 
+        Label lblUsername = new Label();
+        lblUsername.Text = "Username:";
+        lblUsername.Left = 10;
+        lblUsername.Top = 20;
+        lblUsername.Width = 100;
 
-        _txtUsername = new TextBox { Left = 120, Top = 20, Width = 200 };
-        _txtPassword = new TextBox { Left = 120, Top = 60, Width = 200, PasswordChar = '*' };
-        _txtServerAddress = new TextBox { Left = 120, Top = 100, Width = 200 };
-        _txtDatabaseName = new TextBox { Left = 120, Top = 140, Width = 200 };
+        Label lblPassword = new Label();
+        lblPassword.Text = "Password:";
+        lblPassword.Left = 10;
+        lblPassword.Top = 60;
+        lblPassword.Width = 100;
 
+        Label lblServerAddress = new Label();
+        lblServerAddress.Text = "Server Address:";
+        lblServerAddress.Left = 10;
+        lblServerAddress.Top = 100;
+        lblServerAddress.Width = 100;
 
-        _btnSubmit = new Button { Text = "Submit", Left = 120, Top = 180, Width = 100 };
+        Label lblDatabaseName = new Label();
+        lblDatabaseName.Text = "Database Name:";
+        lblDatabaseName.Left = 10;
+        lblDatabaseName.Top = 140;
+        lblDatabaseName.Width = 100;
+
+        // Create text boxes
+        _txtUsername = new TextBox();
+        _txtUsername.Left = 120;
+        _txtUsername.Top = 20;
+        _txtUsername.Width = 200;
+
+        _txtPassword = new TextBox();
+        _txtPassword.Left = 120;
+        _txtPassword.Top = 60;
+        _txtPassword.Width = 200;
+        _txtPassword.PasswordChar = '*';
+
+        _txtServerAddress = new TextBox();
+        _txtServerAddress.Left = 120;
+        _txtServerAddress.Top = 100;
+        _txtServerAddress.Width = 200;
+
+        _txtDatabaseName = new TextBox();
+        _txtDatabaseName.Left = 120;
+        _txtDatabaseName.Top = 140;
+        _txtDatabaseName.Width = 200;
+
+        // Create button
+        _btnSubmit = new Button();
+        _btnSubmit.Text = "Submit";
+        _btnSubmit.Left = 120;
+        _btnSubmit.Top = 180;
+        _btnSubmit.Width = 100;
         _btnSubmit.Click += BtnSubmit_Click;
 
 
@@ -49,6 +92,8 @@ public class DatabaseConnectionDialog : Form
         this.Controls.Add(_txtServerAddress);
         this.Controls.Add(_txtDatabaseName);
         this.Controls.Add(_btnSubmit);
+
+        this.ResumeLayout(false);
     }
 
     private void BtnSubmit_Click(object sender, EventArgs e)
