@@ -35,6 +35,7 @@ namespace Platigue.Gui
         {
             if (dataGridViewInvoices.CurrentRow != null)
             {
+                //TODO: exception throw here
                 SelectedInvoice = (Invoice)dataGridViewInvoices.CurrentRow.DataBoundItem;
             }
             else

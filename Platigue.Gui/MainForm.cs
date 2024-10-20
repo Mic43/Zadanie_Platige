@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Platigue.Db;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Windows.Forms;
@@ -105,7 +106,7 @@ namespace Platigue.Gui
                 MessageBox.Show("Duplicated id");
                 return;
             }
-            
+
             _dbContext!.Invoices.Add(invoice);
 
             SaveChangesSafe();
@@ -176,6 +177,12 @@ namespace Platigue.Gui
             _dbContext!.Invoices.Remove(invoicesListControl.SelectedInvoice);
             SaveChangesSafe();
             ReloadAll();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var results = _dbContext.GetInvoicesByClient().ToList();
+            results.ForEach(x => Trace.WriteLine(x.ToString()));
         }
     }
 }

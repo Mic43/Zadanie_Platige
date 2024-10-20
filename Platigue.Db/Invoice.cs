@@ -5,19 +5,21 @@ namespace Platigue.Db;
 public class Invoice
 {
     public Client? Client { get; set; }
-    public int ClientId { get;  set; }
+    public int ClientId { get; set; }
 
     [Key]
     public string Number { get; private set; }
-    public decimal Value { get;  set; }
-    public string Currency { get;  set; }
-    public decimal VAT { get;  set; }
-    public DateTime IssueDate { get;  set; }
-    public string Description { get;  set; }
+    public decimal Value { get; set; }
+    public string Currency { get; set; }
+    public decimal VAT { get; set; }
+    public DateTime IssueDate { get; set; }
+    public string Description { get; set; }
+
+    public decimal ValueWithTax => Value + VAT * Value;
 
     private Invoice()
     {
-        
+
     }
     public Invoice(string number, Client client, decimal value, string currency, decimal vat, DateTime issueDate, string description)
     {
