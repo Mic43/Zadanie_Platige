@@ -127,7 +127,7 @@
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(792, 422);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
+            tabPage1.Text = "Clients per country";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // panel1
@@ -158,7 +158,7 @@
             tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(792, 422);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
+            tabPage2.Text = "Invoices for months";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // dataGridViewGetInvoicesValueByMonth
@@ -229,7 +229,7 @@
             tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(792, 422);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "tabPage3";
+            tabPage3.Text = "Invoices for clients";
             tabPage3.UseVisualStyleBackColor = true;
             // 
             // dataGridViewGetInvoicesByClient
